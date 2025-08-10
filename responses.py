@@ -1,4 +1,5 @@
 from random import choice , randint
+from datetime import datetime
 
 
 def get_response(user_input: str) -> str:
@@ -29,6 +30,6 @@ def get_response(user_input: str) -> str:
             return "Sorry i couldnt solve that.. please try again"
     
     else:
-        return choice(['I do not understand... i am in early stages of development so my communication is a work in progress',
-                       'what are you talking about?.... i am in early stages of development so my communication is a work in progress',
-                       'Do you mind rephrasing that?... i am in early stages of development so my communication is a work in progress'])
+        return choice(['I do not understand... i am in early stages of development so my communication is a work in progress \n **Try using $help**',
+                       'what are you talking about?.... i am in early stages of development so my communication is a work in progress \n **Try using $help**',
+                       'Do you mind rephrasing that?... i am in early stages of development so my communication is a work in progress \n **Try using $help**'])
