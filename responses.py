@@ -3,35 +3,25 @@ from random import choice , randint
 
 def get_response(user_input: str) -> str:
 
-    # if not user_input.startswith("$"):
-    #     return ''
-    
-    # user_input = user_input[1:].strip()
+    command = user_input.lower().strip()
 
-    lowered:str = user_input.lower()
-
-    if lowered == '':
+    if command == '':
         return 'Well You\'re awfully silent....'
-    elif 'hello' in lowered or 'hi' in lowered:
+    elif command == 'hello' or command == 'hi':
         return 'Hello There!'
-    elif 'how are you' in lowered:
+    elif command == "how are you?" or command == "whats up?":
         return 'I am doing well. how about you?'
-    elif 'bye' in lowered:
+    elif command == 'bye':
         return 'Bye, hit me up if you need anything'
-    elif 'roll dice' in lowered:
-        return f'you rolled: {randint(1,6)}'
-    elif 'bye' in lowered:
-        return 'Bye, hit me up if you need anything'
-    elif 'what do you think of esha?' in lowered:
-        return choice(['Oh esha? isnt she a little kid?',
-                       'hmmm that is a very interesting question. i would say she is a fun to play minecraft with',
-                       'Yeah esha is a nice person , you shouldnt be so mean to her'])
-    elif 'what time is it' in lowered or 'whats the Time':
+    elif command == "roll dice":
+        return f'you rolled: {randint(1,6)}'    
+    
+    elif command == "What time is it?" or command == "Whats the Time":
         from datetime import datetime
         return f"The current time is {datetime.now().strftime('%H:%M:%S')}"
-    elif 'flip a coin' in lowered:
+    elif command == "flip a coin":
         return f'You Got:{choice(["Heads","Tails"])}!'
-    elif 'math' in lowered or 'solve' in lowered:
+    elif command == "math" or command == "solve":
         try:
             result = eval(user_input.replace("$solve","").replace("$math","").strip())
             return f"The answer is {result}"

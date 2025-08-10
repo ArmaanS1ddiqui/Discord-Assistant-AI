@@ -27,8 +27,7 @@ async def send_message(message: Message, user_message: str) -> None:
 
     # Private message detection
     is_private = user_message.startswith('?')
-    if is_private:
-        user_message = user_message[1:].strip()
+    
 
     if user_message.startswith("$announce"):
         # 1. Check for mentions
@@ -78,27 +77,30 @@ async def send_message(message: Message, user_message: str) -> None:
         await handle_speak_command(message)
         return 
     # Fallback for regular messages
+    clean_command = user_message
+    if user_message.startswith(("?","$")):
+        clean_command = user_message[1:].strip()
     try:
-        response = get_response(user_message)
-        if is_private:
-            await message.author.send(response)
-        else:
-            await message.channel.send(response)
+        response = get_response(clean_command)
+        if response:
+            target = message.author if is_private else message.channel
+            await target.send(response)
     except Exception as e:
-        print(f"Response error: {e}")
+        print(f"Error in get_response: {e}")
 
 # Handle bot startup
 @client.event
 async def on_ready() -> None:
     print(f"{client.user} is now running!")
 
-# Handle incoming messages
+# Handle incoming messages / Bouncer that send the code to the function
 @client.event
 async def on_message(message: Message) -> None:
     if message.author == client.user:
         return
-    print(f"[{message.channel}] {message.author} : '{message.content}'")    
-    await send_message(message, message.content.strip())
+    if message.content.startswith(("$","?")) or not message.guild:
+        print(f"[{message.channel}] {message.author} : '{message.content}'")    
+        await send_message(message, message.content.strip()) #this makes it more user friendly like " $Hi" to "$hi"
 
 # Run the bot
 if __name__ == '__main__':
